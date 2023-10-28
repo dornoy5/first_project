@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.js" rel="stylesheet">
+    <title>Loans</title>
+</head>
+<body>
+<div class="container mt-3">
+    <h1>Loans</h1>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a href="{{ url_for('loans.new_loan') }}" class="btn btn-primary">Add New Loan</a>
+        </div>
+        <div class="col-md-6">
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for loans.." class="form-control">
+        </div>
+    </div>
+    <table class="table table-bordered" id="loansTable">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" onclick="sortTable(0)">Loan ID</th>
+            <th scope="col" onclick="sortTable(1)">Customer ID</th>
+            <th scope="col" onclick="sortTable(2)">Book ID</th>
+            <th scope="col" onclick="sortTable(3)">Date of Loan</th>
+            <th scope="col" onclick="sortTable(4)">Date of Return</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for loan in loans %}
+            <tr>
+                <th scope="row">{{ loan.id }}</th>
+                <td>{{ loan.customer_id }}</td>
+                <td>{{ loan.book_id }}</td>
+                <td>{{ loan.date_of_loan }}</td>
+                <td>{{ loan.date_of_return }}</td>
+                <td>
+                    <a href="{{ url_for('loans.view_loan', loan_id=loan.id) }}" class="btn btn-info btn-sm">View</a>
+                    <a href="{{ url_for('loans.edit_loan', loan_id=loan.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ url_for('loans.finish_loan', loan_id=loan.id) }}" method="post" class="d-inline">
+                        <input type="submit" value="Finish Loan" class="btn btn-success btn-sm">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ url_for('static', filename='js/tableFunctions.js') }}"></script>
+</body>
+</html>
